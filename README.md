@@ -86,16 +86,40 @@ skill-gateway/
 #### Claude.ai
 1. **Settings** → **Skills** → **Add Skill**
 2. Upload the `skill-gateway.skill` file
-3. Skill Gateway now automatically triggers on every task
+3. Start a new session and verify the skill is available; invocation depends on the host.
 
-#### Claude Code
+### OpenCode (optional)
+
+Use one maintained clone and link it to the client’s global skill directory.
+The example uses `~/Skills`; choose a different source directory if preferred.
+If either path already exists (including a broken symlink), inspect it first; do not overwrite it.
+
 ```bash
-# Personal skill
-cp -r skill-gateway ~/.claude/skills/
-
-# Project-level
-cp -r skill-gateway .claude/skills/
+mkdir -p "$HOME/Skills" "$HOME/.config/opencode/skills"
+git clone https://github.com/buraksu42/skill-gateway.git "$HOME/Skills/skill-gateway"
+ln -s "$HOME/Skills/skill-gateway" "$HOME/.config/opencode/skills/skill-gateway"
 ```
+
+Open a new OpenCode session and ask it to load `skill-gateway` using its skill tool;
+verify the reported source resolves to `~/Skills/skill-gateway/SKILL.md`.
+OpenCode's [global skill discovery](https://opencode.ai/docs/skills/) is on-demand;
+installation alone does not force invocation on every request.
+
+For updates, first inspect `git status --short --branch` and `git diff` in the clone.
+Only on a clean, intended tracking branch, run `git pull --ff-only`; stop on divergence.
+Do not auto-stash, discard local changes, or push as part of a skill update.
+
+Choose the client, model provider, and development host in your own configuration.
+This public skill contains no personal infrastructure profile and requires no specific
+provider subscription. Follow the project's configured test commands and repository rules.
+See the runtime compatibility section in `SKILL.md` for tool and git boundaries.
+
+### Other compatible clients (optional)
+
+Claude Code may use a non-overwriting directory symlink from
+`~/.claude/skills/skill-gateway` to the same central clone. Codex may use its configured
+skill directory. Check existing copies first, especially `~/.agents/skills`, which
+OpenCode also discovers; avoid duplicate skill names. No second clone is needed.
 
 #### API
 ```bash
@@ -180,16 +204,16 @@ skill-gateway/
 #### Claude.ai
 1. **Settings** → **Skills** → **Add Skill**
 2. `skill-gateway.skill` dosyasını yükleyin
-3. Artık her task'ta Skill Gateway otomatik devreye girer
+3. Yeni oturumda skill'in görünür olduğunu doğrulayın; çağırma davranışı istemciye bağlıdır.
 
-#### Claude Code
-```bash
-# Kişisel skill olarak
-cp -r skill-gateway ~/.claude/skills/
+#### OpenCode (isteğe bağlı)
 
-# Proje bazlı
-cp -r skill-gateway .claude/skills/
-```
+Yukarıdaki **OpenCode (optional)** adımlarını kendi geliştirme ortamınızda uygulayın.
+`~/Skills` örnek kaynak dizinidir; mevcut kurulum ve symlink'leri ezmeyin.
+İstemci, model sağlayıcısı, test makinesi ve ağ düzeni kullanıcı yapılandırmasında kalır.
+Bu public skill kişisel altyapı veya belirli bir abonelik gerektirmez.
+Repo kuralları korunur; push yalnız açık kullanıcı isteğiyle yapılır.
+Yeni oturumda skill'in yüklenebildiğini doğrulayın.
 
 #### API
 ```bash

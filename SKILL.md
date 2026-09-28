@@ -14,6 +14,17 @@ description: >
 
 # Skill Gateway — Rule All Skills
 
+## Runtime compatibility
+
+These instructions govern tools and local artifacts; they do not change this skill's domain workflow, triggers, or verdict criteria.
+
+- Use the user's chosen client, model provider, and execution environment. This public skill does not prescribe a machine, network, subscription, or model role. Keep personal infrastructure and credentials in local configuration, outside the published skill.
+- Before modifying a project, read applicable `AGENTS.md`, nested rules, `CLAUDE.md`, `HANDOFF.md`, and relevant README/CI instructions. Preserve existing rules, symlinks, stack versions, package manager, and unrelated work.
+- Discover skills through the active client's supported locations and tools. Keep one maintained source, avoid duplicate names, and resolve supporting files relative to the skill directory. Do not overwrite existing installations or rule files.
+- Run appropriate checks in the project's configured development environment. Save reports in the task/project output location, not inside the installed skill. State unavailable tools, missing research access, and unverified checks; do not claim work that did not run.
+- Inspect branch, status, and diff before git changes; stage only task files. Push only on an explicit user request, including equivalent remote API writes. Publication, merge, and deployment require applicable authorization. Do not discard unrelated changes or expose secrets in prompts, reports, or git.
+
+
 You are the **gateway skill** — every task-oriented request passes through you first.
 Your job is to assess the user's need, route to the right skill, and step aside.
 
@@ -64,7 +75,7 @@ User request arrives
   │   └─ Ask ONE quick question → then read skill → start working
   │
   └─ No task implied? (greeting, opinion, general knowledge)
-      └─ Don't trigger, let Claude handle normally
+      └─ Don't trigger, let the active agent handle normally
 ```
 
 ## Core Principles
@@ -92,8 +103,16 @@ If the need is clear from context, skip straight to recommendations. Don't over-
 
 Use this **priority order**:
 
-#### A) Check the Curated Catalog (below)
-Scan the built-in catalog first. It covers the most common and battle-tested skills.
+#### A) Check installed skills, then the curated catalog
+Use the current client's discovered skill names and descriptions first. Prefer the
+maintained source exposed through the active client's skill tool. Names such as `pptx`
+and `xlsx` below are catalog examples, not proof those exact tools are installed.
+Read the selected skill before acting. A skill does not grant missing MCP tools,
+provider access, or permission to install software. Preserve explicit user choices
+and applicable repo rules; routing priority never overrides them.
+If no installed skill fits, scan the catalog as discovery leads, then verify the source.
+For installation, inspect the source and use the central-clone workflow in README;
+do not create a second copy or overwrite an existing global skill.
 
 #### B) Web Search for Fresh Skills
 If the catalog doesn't have a good match, search the web:
@@ -117,7 +136,7 @@ Present recommendations in this format:
 - **How to install**: Brief install instruction
 
 **If no good skill exists:**
-- Suggest a **workaround** using built-in Claude capabilities
+- Suggest a **workaround** using the active client’s built-in capabilities
 - Or offer to **create a new skill** using the skill-creator skill
 
 ### Step 4: Anticipate Follow-ups
@@ -221,7 +240,7 @@ After recommending, briefly mention:
 | vibe-coder | user-custom | Structured project prompt generation |
 | kanban-skill | community | Markdown-based Kanban board |
 | linear-claude-skill | community | Linear issue/project management |
-| git-pushing | community | Git operations automation |
+| git-pushing | community | Git assistance; never grants push authorization |
 | changelog-generator | community | User-facing changelogs from git commits |
 | jules | community | Delegate coding tasks to Google Jules AI |
 
@@ -267,7 +286,7 @@ Quick routing for common requests:
 
 If you can't find a suitable skill:
 
-1. **Workaround first**: Can Claude handle this with built-in tools + good prompting? If yes, explain how.
+1. **Workaround first**: Can the active agent handle this with built-in tools + good prompting? If yes, explain how.
 2. **Combo approach**: Can 2-3 existing skills be combined? Explain the workflow.
 3. **Create new**: Suggest using skill-creator to build a custom skill. Briefly outline what the new skill would need.
 4. **External tools**: If a skill isn't the right answer, recommend MCP servers, browser extensions, or other tools.
